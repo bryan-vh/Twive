@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1 Twive
+  h2 See if your favorite streamer(s) are live!
+  form(method='POST' action='/')
+    label(for='name') Twitch Username: 
+    input(type='text' id='name' placeholder='Enter username here...' name='name')
+    input(type='submit')
+  hr
+  .streamers
+    .online
+      h3 Online
+      each val in online
+        li= val
+    br
+    .offline
+      h3 Offline
+      each val in offline
+        li= val
+
+    
+
