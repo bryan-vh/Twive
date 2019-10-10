@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-const axios = require('axios');
 const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
 
 var online = [];
 var offline = [];
@@ -16,23 +16,25 @@ router.post('/', function(req, res, next) {
   const name = req.body.name;
   const url = "https://www.twitch.tv/" + name;
 
-  axios.get(url)
-    .then(response => {
-      // Since the streamer actually exists, add him to the searched array
+  puppeteer
+    .launch()
+    .then(browser => {
+      return browser.newPage();
+    })
+    .then(page => {
+      return page.goto(url).then(() => {
+        return page.content();
+      });
+    })
+    .then(html => {
+      // console.log(html);
+      const $ = cheerio.load(html);
+
       let isLive = false;
 
-      let checkLive = html => {
-        const $ = cheerio.load(html);
-
-        if($('.live-indicator.tw-mg-l-05.tw-sm-mg-l-1.tw-visible').length){
-          isLive = true;
-          console.log('here');
-        }
-
-        console.log(isLive);``
+      if($('div.live-indicator.tw-mg-l-05.tw-sm-mg-l-1.tw-visible').length){
+        isLive = true;
       }
-
-      checkLive(response.data);
 
       if(isLive){
         online.push(name);
@@ -44,9 +46,10 @@ router.post('/', function(req, res, next) {
       res.render('index', { 'online': online, 'offline': offline });
     })
     .catch(error => {
-      // console.log(error);
-      res.render('index', { 'online': online, 'offline': offline, 'error': error });
-    })
+      console.log(error);
+      res.render('index', { 'online': online, 'offline': offline });
+    });
+    
 });
 
 module.exports = router;
