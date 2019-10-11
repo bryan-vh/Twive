@@ -27,7 +27,6 @@ router.post('/', function(req, res, next) {
       });
     })
     .then(html => {
-      // console.log(html);
       const $ = cheerio.load(html);
 
       let isLive = false;
@@ -49,7 +48,7 @@ router.post('/', function(req, res, next) {
       console.log(error);
       res.render('index', { 'online': online, 'offline': offline });
     });
-    
+
 });
 
 module.exports = router;
