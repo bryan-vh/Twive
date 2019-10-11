@@ -11,13 +11,17 @@ block content
   .streamers
     .online
       h3 Online
-      each val in online
-        li= val
+      each streamer in online
+        div
+          p= streamer.name
+          p= streamer.viewers
+          a(href=streamer.twitchUrl) Twitch
     br
     .offline
       h3 Offline
-      each val in offline
-        li= val
+      each streamer in offline
+        div
+          p= streamer.name
 
     
 
