@@ -7,6 +7,8 @@ block content
     label(for='name') Twitch Username: 
     input(type='text' id='name' placeholder='Enter username here...' name='name')
     input(type='submit')
+  form(method='POST' action='/refresh')
+    button(type='submit') Refresh
   hr
   .streamers
     .online
