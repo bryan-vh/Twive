@@ -3,30 +3,17 @@ extends layout
 block content
   h1 Twive
   h2 See if your favorite streamer(s) are live!
-  form(method='POST' action='/')
-    label(for='name') Twitch Username: 
-    input(type='text' id='name' placeholder='Enter username here...' name='name')
-    input(type='submit')
+  div.searchbox
+    form.search(method='POST' action='/')
+      label(for='name') Twitch Username:
+      br
+      input(type='text' id='name' placeholder='Enter username here...' name='name')
+      br
+      input(type='submit')
   form(method='POST' action='/refresh')
-    button(type='submit') Refresh
-  hr
+      button(type='submit') Refresh
+  //- hr
   .streamers
-    //- .online
-    //-   h3 Online
-    //-   each streamer in online
-    //-     div.onstream
-    //-       img.profile(src=streamer.imageUrl)
-    //-       p= streamer.name
-    //-       p= streamer.viewers
-    //-       a(href=streamer.twitchUrl) Twitch
-    //-     br
-    //- br
-    //- .offline
-    //-   h3 Offline
-    //-   each streamer in offline
-    //-     div.offstream
-    //-       img.profile(src=streamer.imageUrl)
-    //-       p= streamer.name
     .online
       h3 Online
       table.stream

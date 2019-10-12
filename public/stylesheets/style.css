@@ -1,16 +1,35 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 20px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: white;
+  background-color: black;
+}
+
+h1 {
+  color: #8631FF;
 }
 
 a {
   color: #00B7FF;
 }
 
-.stream {
-  
+.search {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.searchbox {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .profile {
   border-radius: 50%;
+}
+
+input[type="text"], input[type="submit"] {
+  border-radius: 4px;
+  padding: 8px 8px;
 }

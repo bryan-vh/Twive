@@ -7,6 +7,10 @@ const puppeteer = require('puppeteer');
 let online = [];
 let offline = [];
 
+function upperCaseFirst(string){
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 async function updateData(){
   let tempOnline = [];
   let tempOffline = [];
@@ -40,7 +44,7 @@ async function updateData(){
       viewers: viewers,
       isLive: isLive,
       imageUrl: imageUrl,
-      name: name,
+      name: upperCaseFirst(name),
       twitchUrl: url
     };
 
@@ -81,7 +85,7 @@ async function updateData(){
       viewers: viewers,
       isLive: isLive,
       imageUrl: imageUrl,
-      name: name,
+      name: upperCaseFirst(name),
       twitchUrl: url
     };
 
@@ -109,10 +113,26 @@ router.post('/refresh', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  const name = req.body.name;
-  const url = "https://www.twitch.tv/" + name;
+  const sName = req.body.name;
+  const url = "https://www.twitch.tv/" + sName;
 
-  puppeteer
+  let isSearched = false;
+
+  for(let name in online){
+    if(name.toLowerCase() == sName.toLowerCase()){
+      isSearched = true;
+      break;
+    }
+  }
+  for(let name in offline){
+    if(name.toLowerCase() == sName.toLowerCase()){
+      isSearched = true;
+      break;
+    }
+  }
+
+  if(!isSearched){
+    puppeteer
     .launch()
     .then(browser => {
       return browser.newPage();
@@ -142,7 +162,7 @@ router.post('/', function(req, res, next) {
         viewers: viewers,
         isLive: isLive,
         imageUrl: imageUrl,
-        name: name,
+        name: upperCaseFirst(sName),
         twitchUrl: url
       };
 
@@ -159,6 +179,7 @@ router.post('/', function(req, res, next) {
       console.log(error);
       res.render('index', { 'online': online, 'offline': offline, 'loading': false });
     });
+  }
 });
 
 module.exports = router;
