@@ -11,19 +11,56 @@ block content
     button(type='submit') Refresh
   hr
   .streamers
+    //- .online
+    //-   h3 Online
+    //-   each streamer in online
+    //-     div.onstream
+    //-       img.profile(src=streamer.imageUrl)
+    //-       p= streamer.name
+    //-       p= streamer.viewers
+    //-       a(href=streamer.twitchUrl) Twitch
+    //-     br
+    //- br
+    //- .offline
+    //-   h3 Offline
+    //-   each streamer in offline
+    //-     div.offstream
+    //-       img.profile(src=streamer.imageUrl)
+    //-       p= streamer.name
     .online
       h3 Online
-      each streamer in online
-        div
-          p= streamer.name
-          p= streamer.viewers
-          a(href=streamer.twitchUrl) Twitch
-    br
+      table.stream
+        tr
+          th Profile
+          th Username
+          th Viewers
+          th Stream
+        each streamer in online
+          tr
+            td
+              img.profile(src=streamer.imageUrl)
+            td
+              h4= streamer.name
+            td
+              h4= streamer.viewers
+            td
+              a(href=streamer.twitchUrl) Twitch
     .offline
       h3 Offline
-      each streamer in offline
-        div
-          p= streamer.name
+      table.stream
+        tr
+          th Profile
+          th Username
+          th Stream
+        each streamer in offline
+          tr
+            td
+              img.profile(src=streamer.imageUrl)
+            td
+              h4= streamer.name
+            td
+              a(href=streamer.twitchUrl) Twitch
+
 
     
 
