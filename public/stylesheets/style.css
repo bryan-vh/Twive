@@ -20,6 +20,11 @@ a {
   flex-direction: column;
 }
 
+.refresh {
+  border-radius: 4px;
+  padding: 8px 8px;
+}
+
 .searchbox {
   margin-top: 1rem;
   margin-bottom: 1rem;
