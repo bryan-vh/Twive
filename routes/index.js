@@ -7,6 +7,27 @@ const puppeteer = require('puppeteer');
 let online = [];
 let offline = [];
 
+const blockedResourceTypes = [
+  'image',
+  'media',
+  'font',
+  'texttrack',
+  'object',
+  'beacon',
+  'csp_report',
+  'imageset'
+];
+
+const skippedResources = [
+  'quantserve',
+  'adzerk',
+  'doubleclick',
+  'adition',
+  'google',
+  'facebook',
+  'analytics'
+];
+
 function upperCaseFirst(string){
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -21,6 +42,17 @@ async function updateData(){
 
     let browser = await puppeteer.launch();
     let page = await browser.newPage();
+    await page.setRequestInterception(true);
+
+    page.on('request', (req) => {
+      if(req.resourceType === 'image' || req.resourceType === 'stylesheet'){
+        req.abort();
+      }
+      else{
+        req.continue();
+      }
+    });
+
     let html = await page.goto(url).then(() => {
       return page.content();
     });
