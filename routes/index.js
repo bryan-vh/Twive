@@ -7,25 +7,11 @@ const puppeteer = require('puppeteer');
 let online = [];
 let offline = [];
 
-const blockedResourceTypes = [
-  'image',
-  'media',
-  'font',
-  'texttrack',
-  'object',
-  'beacon',
-  'csp_report',
-  'imageset'
-];
-
-const skippedResources = [
-  'quantserve',
-  'adzerk',
-  'doubleclick',
-  'adition',
-  'google',
-  'facebook',
-  'analytics'
+const whitelist = [
+  'document', 
+  'script', 
+  'xhr', 
+  'fetch'
 ];
 
 function upperCaseFirst(string){
@@ -45,12 +31,11 @@ async function updateData(){
     await page.setRequestInterception(true);
 
     page.on('request', (req) => {
-      if(req.resourceType === 'image' || req.resourceType === 'stylesheet'){
-        req.abort();
+      if (!whitelist.includes(req.resourceType())) {
+        return req.abort();
       }
-      else{
-        req.continue();
-      }
+
+      req.continue();
     });
 
     let html = await page.goto(url).then(() => {
