@@ -135,14 +135,16 @@ router.post('/', function(req, res, next) {
 
   let isSearched = false;
 
-  for(let name in online){
-    if(name.toLowerCase() == sName.toLowerCase()){
+  for(let streamer of online){
+    if(streamer.name.toLowerCase() === sName.toLowerCase()){
+      console.log('found!');
       isSearched = true;
       break;
     }
   }
-  for(let name in offline){
-    if(name.toLowerCase() == sName.toLowerCase()){
+  for(let streamer of offline){
+    if(streamer.name.toLowerCase() === sName.toLowerCase()){
+      console.log('found');
       isSearched = true;
       break;
     }
@@ -196,6 +198,9 @@ router.post('/', function(req, res, next) {
       console.log(error);
       res.render('index', { 'online': online, 'offline': offline, 'loading': false });
     });
+  }
+  else{
+    res.render('index', { 'online': online, 'offline': offline, 'loading': false });
   }
 });
 
