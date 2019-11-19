@@ -33,17 +33,20 @@ router.post('/', function(req, res, next) {
 });
 
 async function updateStreamer(name) {
+  // Remove the streamer, if they exist, from the online array
   for(let i = 0; i < online.length; i++) {
     if(online[i].name === name) {
       online.splice(i, 1);
     }
   }
+  // Remove the streamer, if they exist, from the offline array
   for(let i = 0; i < offline.length; i++) {
     if(offline[i].name === name) {
       offline.splice(i, 1);
     }
   }
 
+  // Check the streamer again to update them
   await checkLive(name);
 }
 

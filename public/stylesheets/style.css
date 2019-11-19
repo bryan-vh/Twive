@@ -1,23 +1,79 @@
 body {
-  margin: 20px;
+  margin: 0px;
   font-family: Helvetica, Arial, sans-serif;
   color: white;
-  background-color: black;
+  background-color: #303030;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
   color: #8631FF;
+  margin: 0px;
+  padding: 20px;
+}
+
+h2 {
+  margin: 0px;
 }
 
 a {
-  color: #00B7FF;
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+button:hover, input[type="submit"]:hover {
+  cursor: pointer;
+  background-color: rgb(109, 39, 207);
+}
+
+td {
+  padding: 0px 20px 20px 0px;
+}
+
+th {
+  padding: 0px 20px 20px 0px;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  background-color: #202020;
+  width: 100%;
+}
+
+.content {
+  padding: 20px;
+  width: 90%;
 }
 
 .search {
-  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.refreshall {
+  margin-bottom: 40px;
+  outline: none;
+}
+
+.refresh {
+  color: white;
+  background-color: #8631FF;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 6px;
+  border-width: 0px;
+  outline: none;
 }
 
 #refresh-name {
@@ -34,5 +90,52 @@ a {
 }
 
 .name {
-  margin: 0rem, 1rem, 1rem, 0rem;
+  margin: 0px 0px 0px 20px;
+  padding: 10px;
+  border-radius: 6px 0px 0px 6px;
+  border-width: 0px;
+  width: 250px;
+  font-size: 14px;
+  background-color: #505050;
+}
+
+.name:focus {
+  color: white;
+  background-color: black;
+  outline: none;
+  box-shadow: inset 0px 0px 0px 2px #8631FF;
+}
+
+.submit {
+  padding: 10px;
+  border-radius: 0px 6px 6px 0px;
+  border-width: 0px;
+  color: white;
+  background-color: #202020;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.submit:focus {
+  outline: none;
+}
+
+.onlinelink {
+  margin: 0px !important;
+  color: white;
+  border-radius: 6px;
+  padding: 10px;
+  background-color: red;
+}
+
+.onlinelink:hover {
+  background-color: rgb(199, 0, 0);
+}
+
+.offlinelink {
+  margin: 0px !important;
+  color: white;
+  background-color: #202020;
+  border-radius: 6px;
+  padding: 10px;
 }

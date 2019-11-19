@@ -1,57 +1,72 @@
 extends layout
 
+block header
+  .header
+    h1 Twive
+
 block content
-  h1 Twive
-  h2 See if your favorite streamer(s) are live!
-  .searchbox
-    form.search(method='POST' action='/')
-      label(for='name') Twitch Username:
-      input(type='text' id='name' placeholder='Enter username here...' name='name')
-      input(type='submit')
-  form(method='POST' action='/refresh-all')
-      button.refresh(type='submit') Refresh All
-  .streamers
-    .online
-      h3 Online
-      table.stream
-        tr
-          th Profile
-          th Username
-          th Viewers
-          th Stream
-        each streamer in online
+  .content
+    //- h2 See if your favorite streamer(s) are live!
+    .searchbox
+      form.search(method='POST' action='/')
+        h2 Twitch Username:
+        input.name(type='text' id='name' placeholder='Search' name='name')
+        input.submit(type='submit')
+    form.refreshall(method='POST' action='/refresh-all')
+        button.refresh(type='submit') Refresh All
+    .streamers
+      .online
+        h3 ONLINE
+        table.stream
           tr
-            td
-              img.profile(src=streamer.image)
-            td
-              h4= streamer.name
-            td
-              h4= streamer.viewers
-            td
-              a(href=streamer.twitchUrl) Twitch
-            td
-              form(method='POST' action='/refresh')
-                input(type='text' id='refresh-name' value= streamer.name name='name')
-                button(type='submit') Refresh
-    .offline
-      h3 Offline
-      table.stream
-        tr
-          th Profile
-          th Username
-          th Stream
-        each streamer in offline
+            th Profile
+            th Username
+            th Viewers
+            th Stream
+          each streamer in online
+            tr
+              td
+                .item
+                  img.profile(src=streamer.image)
+              td
+                .item
+                  h4= streamer.name
+              td
+                .item
+                  h4= streamer.viewers
+              td
+                .item
+                  a(href=streamer.twitchUrl target="_blank") 
+                    h4.onlinelink LIVE NOW
+              td
+                .item
+                  form(method='POST' action='/refresh')
+                    input(type='text' id='refresh-name' value= streamer.name name='name')
+                    button.refresh(type='submit') Refresh
+      .offline
+        h3 OFFLINE
+        table.stream
           tr
-            td
-              img.profile(src=streamer.image)
-            td
-              h4= streamer.name
-            td
-              a(href=streamer.twitchUrl) Twitch
-            td
-              form(method='POST' action='/refresh')
-                input(type='text' id='refresh-name' value= streamer.name name='name')
-                button(type='submit') Refresh
+            th Profile
+            th Username
+            th Stream
+          each streamer in offline
+            tr
+              td
+                .item
+                  img.profile(src=streamer.image)
+              td
+                .item
+                  h4= streamer.name
+              td
+                .item
+                  a(href=streamer.twitchUrl target="_blank") 
+                    h4.offlinelink STREAM
+              td
+                .item
+                  form(method='POST' action='/refresh')
+                    input(type='text' id='refresh-name' value= streamer.name name='name')
+                    button.refresh(type='submit') Refresh
 
 
     
