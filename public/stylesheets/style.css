@@ -16,13 +16,12 @@ a {
 .search {
   width: 100%;
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.refresh {
-  border-radius: 4px;
-  padding: 8px 8px;
+#refresh-name {
+  display: none;
 }
 
 .searchbox {
@@ -34,7 +33,6 @@ a {
   border-radius: 50%;
 }
 
-input[type="text"], input[type="submit"] {
-  border-radius: 4px;
-  padding: 8px 8px;
+.name {
+  margin: 0rem, 1rem, 1rem, 0rem;
 }

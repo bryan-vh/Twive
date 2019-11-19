@@ -3,16 +3,13 @@ extends layout
 block content
   h1 Twive
   h2 See if your favorite streamer(s) are live!
-  div.searchbox
+  .searchbox
     form.search(method='POST' action='/')
       label(for='name') Twitch Username:
-      br
       input(type='text' id='name' placeholder='Enter username here...' name='name')
-      br
       input(type='submit')
-  form(method='POST' action='/refresh')
-      button.refresh(type='submit') Refresh
-  //- hr
+  form(method='POST' action='/refresh-all')
+      button.refresh(type='submit') Refresh All
   .streamers
     .online
       h3 Online
@@ -25,13 +22,17 @@ block content
         each streamer in online
           tr
             td
-              img.profile(src=streamer.imageUrl)
+              img.profile(src=streamer.image)
             td
               h4= streamer.name
             td
               h4= streamer.viewers
             td
               a(href=streamer.twitchUrl) Twitch
+            td
+              form(method='POST' action='/refresh')
+                input(type='text' id='refresh-name' value= streamer.name name='name')
+                button(type='submit') Refresh
     .offline
       h3 Offline
       table.stream
@@ -42,11 +43,15 @@ block content
         each streamer in offline
           tr
             td
-              img.profile(src=streamer.imageUrl)
+              img.profile(src=streamer.image)
             td
               h4= streamer.name
             td
               a(href=streamer.twitchUrl) Twitch
+            td
+              form(method='POST' action='/refresh')
+                input(type='text' id='refresh-name' value= streamer.name name='name')
+                button(type='submit') Refresh
 
 
     
