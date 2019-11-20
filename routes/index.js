@@ -3,35 +3,82 @@ var router = express.Router();
 
 const puppeteer = require('puppeteer');
 
+const blacklist = [
+  'image',
+  'stylesheet',
+  'font',
+  'media'
+];
+
+let recommended;
 let online = [];
 let offline = [];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { 'online': online, 'offline': offline });
+  getRecommendedStreamer().then(() => {
+    res.render('index', { 'online': online, 'offline': offline, 'recommended': recommended });
+  });
 });
 
 /* POST refresh single streamer. */
 router.post('/refresh', function(req, res, next) {
   updateStreamer(req.body.name).then(() => {
-    res.render('index', { 'online': online, 'offline': offline });
+    res.render('index', { 'online': online, 'offline': offline, 'recommended': recommended });
   });
 });
 
 /* POST refresh all streamers. */
 router.post('/refresh-all', function(req, res, next ) {
   updateAll().then(() => {
-    res.render('index', { 'online': online, 'offline': offline });
+    res.render('index', { 'online': online, 'offline': offline, 'recommended': recommended });
   });
 });
 
 /* POST search for Twitch streamer. */
 router.post('/', function(req, res, next) {
   checkLive(req.body.name).then(() => {
-    res.render('index', { 'online': online, 'offline': offline });
+    res.render('index', { 'online': online, 'offline': offline, 'recommended': recommended });
   });
 });
 
+/**
+ * Get recommended streamer to display their stream
+ */
+async function getRecommendedStreamer() {
+  const url = 'https://www.twitch.tv';
+
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  await page.goto(url);
+
+  recommended = await page.evaluate(() => {
+    let recommendedElement = document.querySelector('.side-nav-card__avatar').querySelector('figure');
+
+    return recommendedElement !== null ? recommendedElement.getAttribute('aria-label') : '';
+  });
+
+  await browser.close();
+}
+
+/**
+ * Update all streamers and their info
+ */
+async function updateAll() {
+  // Update all streamers in online
+  for(const name in online) {
+    await updateStreamer(name);
+  }
+  // Update all streamers in offline
+  for(const name in offline) {
+    await updateStreamer(name);
+  }
+}
+
+/**
+ * Update an individual streamer's info
+ */
 async function updateStreamer(name) {
   // Remove the streamer, if they exist, from the online array
   for(let i = 0; i < online.length; i++) {
@@ -50,6 +97,9 @@ async function updateStreamer(name) {
   await checkLive(name);
 }
 
+/**
+ * Check if a streamer is live
+ */
 async function checkLive(name) {
   if(name === null) return;
   if(name === undefined) return;
@@ -61,11 +111,23 @@ async function checkLive(name) {
   // Check if the streamer has already been searched
   if(doesExist(name)) return;
 
-  // Launch the Puppeteer instance
+  // Launch a new Puppeteer instance
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
+  // Surround with try / catch in case of exception
   try {
+    await page.setRequestInterception(true);
+
+    page.on('request', (req) => {
+      if(blacklist.includes(req.resourceType)) {
+        req.abort();
+      }
+      else {
+        req.continue();
+      }
+    });
+
     // Navigate to the Twitch stream
     await page.goto(url);
 
@@ -105,8 +167,6 @@ async function checkLive(name) {
     // Add the streamer's twitch URL to the object
     streamer.twitchUrl = url;
 
-    console.log(streamer);
-
     // If the streamer is live, add it to the online array, otherwise add it to the offline array
     if(streamer.isLive) {
       online.push(streamer);
@@ -115,8 +175,7 @@ async function checkLive(name) {
       offline.push(streamer);
     }
 
-    console.log(online);
-
+    // Sort the online array in descending order by viewers
     online.sort((a, b) => {
       let aViewers = parseInt(a.viewers.replace(/,/g, ''));
       let bViewers = parseInt(b.viewers.replace(/,/g, ''));
@@ -124,21 +183,20 @@ async function checkLive(name) {
       return bViewers - aViewers;
     });
 
-    console.log(online);
-
     // Close the puppeteer instance
-    await page.close();
     await browser.close();
   }
   catch(error) {
     console.log(error);
 
-    await page.close();
+    // Close the puppeteer instance
     await browser.close();
   }
 }
 
-/* Checks whether the given streamer has already been searched */
+/**
+ * Checks whether the streamer has already been searched
+ */
 function doesExist(name) {
   for(let streamer of online) {
     if(streamer.name.toLowerCase() === name.toLowerCase()) {

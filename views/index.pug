@@ -2,71 +2,79 @@ extends layout
 
 block header
   .header
+    i.fab.fa-twitch.fa-3x
     h1 Twive
 
 block content
-  .content
-    //- h2 See if your favorite streamer(s) are live!
-    .searchbox
-      form.search(method='POST' action='/')
-        h2 Twitch Username:
-        input.name(type='text' id='name' placeholder='Search' name='name')
-        input.submit(type='submit')
-    form.refreshall(method='POST' action='/refresh-all')
-        button.refresh(type='submit') Refresh All
-    .streamers
-      .online
-        h3 ONLINE
-        table.stream
-          tr
-            th Profile
-            th Username
-            th Viewers
-            th Stream
-          each streamer in online
+  .container
+    .content
+      //- h2 See if your favorite streamer(s) are live!
+      .searchbox
+        form.search(method='POST' action='/')
+          h2 Twitch Username:
+          input.name(type='text' id='name' placeholder='Search' name='name')
+          input.submit(type='submit')
+      form.refreshall(method='POST' action='/refresh-all')
+          button.refresh(type='submit') Refresh All
+      .streamers
+        .online
+          h3 ONLINE
+          table.stream
             tr
-              td
-                .item
-                  img.profile(src=streamer.image)
-              td
-                .item
-                  h4= streamer.name
-              td
-                .item
-                  h4= streamer.viewers
-              td
-                .item
-                  a(href=streamer.twitchUrl target="_blank") 
-                    h4.onlinelink LIVE NOW
-              td
-                .item
-                  form(method='POST' action='/refresh')
-                    input(type='text' id='refresh-name' value= streamer.name name='name')
-                    button.refresh(type='submit') Refresh
-      .offline
-        h3 OFFLINE
-        table.stream
-          tr
-            th Profile
-            th Username
-            th Stream
-          each streamer in offline
+              th Profile
+              th Username
+              th Viewers
+              th Stream
+            each streamer in online
+              tr
+                td
+                  .item
+                    img.profile(src=streamer.image)
+                td
+                  .item
+                    h4= streamer.name
+                td
+                  .item
+                    h4= streamer.viewers
+                td
+                  .item
+                    a(href=streamer.twitchUrl target="_blank") 
+                      h4.onlinelink LIVE NOW
+                td
+                  .item
+                    form(method='POST' action='/refresh')
+                      input(type='text' id='refresh-name' value= streamer.name name='name')
+                      button.refresh(type='submit') Refresh
+        .offline
+          h3 OFFLINE
+          table.stream
             tr
-              td
-                .item
-                  img.profile(src=streamer.image)
-              td
-                .item
-                  h4= streamer.name
-              td
-                .item
-                  a(href=streamer.twitchUrl target="_blank") 
-                    h4.offlinelink STREAM
-              td
-                .item
-                  form(method='POST' action='/refresh')
-                    input(type='text' id='refresh-name' value= streamer.name name='name')
-                    button.refresh(type='submit') Refresh
+              th Profile
+              th Username
+              th Stream
+            each streamer in offline
+              tr
+                td
+                  .item
+                    img.profile(src=streamer.image)
+                td
+                  .item
+                    h4= streamer.name
+                td
+                  .item
+                    a(href=streamer.twitchUrl target="_blank") 
+                      h4.offlinelink STREAM
+                td
+                  .item
+                    form(method='POST' action='/refresh')
+                      input(type='text' id='refresh-name' value= streamer.name name='name')
+                      button.refresh(type='submit') Refresh
+    .randomstream
+      iframe.recommended(src="https://player.twitch.tv/?channel=" + recommended, height="400", width="711", frameborder="0", scrolling="no", allowfullscreen="true")
+
+block footer
+  //- .footer
+  //-   h2 Created by Bryan Van Horn
 
 
     

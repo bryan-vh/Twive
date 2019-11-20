@@ -47,6 +47,22 @@ th {
 .header {
   background-color: #202020;
   width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.fab {
+  margin-left: 20px;
+  color: #8631FF;
+}
+
+.footer {
+  background-color: #202020;
+  width: 100%;
+}
+
+.container {
+  display: flex;
 }
 
 .content {
@@ -138,4 +154,17 @@ th {
   background-color: #202020;
   border-radius: 6px;
   padding: 10px;
+}
+
+.offlinelink:hover {
+  background-color: black;
+}
+
+.randomstream {
+  padding: 40px;
+}
+
+.recommended {
+  border: 2px solid #8631FF;
+  border-radius: 4px;
 }
