@@ -24,7 +24,8 @@ router.get('/', function(req, res, next) {
 /* POST refresh single streamer. */
 router.post('/refresh', function(req, res, next) {
   updateStreamer(req.body.name).then(() => {
-    res.render('index', { 'online': online, 'offline': offline, 'recommended': recommended });
+    // res.render('index', { 'online': online, 'offline': offline, 'recommended': recommended });
+    res.redirect('../');
   });
 });
 
@@ -52,6 +53,8 @@ async function getRecommendedStreamer() {
   const page = await browser.newPage();
 
   await page.goto(url);
+
+  await page.waitForSelector('.side-nav-card__avatar');
 
   recommended = await page.evaluate(() => {
     let recommendedElement = document.querySelector('.side-nav-card__avatar').querySelector('figure');
